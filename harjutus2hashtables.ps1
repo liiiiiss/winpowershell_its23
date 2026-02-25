@@ -1,14 +1,34 @@
 ﻿# 5. Hashtable
 
-$student = @{
-    Name = "Liis"
-    Age = 18
-    Course = "IT-spetsialist"
-    School = "voco"
+# Practice 2 - Hashtable
+
+# Hashtable 1 - Days Worked
+$workDays = @{
+    John = 12
+    Joe  = 20
+    Mary = 18
 }
 
-Write-Host "Student Information:" -ForegroundColor Cyan
-Write-Host "Name: $($student.Name)" -ForegroundColor Yellow
-Write-Host "Age: $($student.Age)" -ForegroundColor Yellow
-Write-Host "Course: $($student.Course)" -ForegroundColor Yellow
-Write-Host "School: $($student.School)" -ForegroundColor Yellow
+# Hashtable 2 - Salary Per Day
+$salaryPerDay = @{
+    John = 100
+    Joe  = 120
+    Mary = 150
+}
+
+# Hashtable 3 - Total Salary (calculated)
+$totalSalary = @{
+    John = $workDays.John * $salaryPerDay.John
+    Joe  = $workDays.Joe  * $salaryPerDay.Joe
+    Mary = $workDays.Mary * $salaryPerDay.Mary
+}
+
+Write-Host "Hashtable 1 - Days Worked" -ForegroundColor Cyan
+$workDays
+
+Write-Host "`nHashtable 2 - Salary Per Day" -ForegroundColor Cyan
+$salaryPerDay
+
+Write-Host "`nHashtable 3 - Total Salary" -ForegroundColor Green
+$totalSalary
+
