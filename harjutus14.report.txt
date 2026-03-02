@@ -1,0 +1,102 @@
+﻿# ============================================
+# system_report.ps1
+# ============================================
+
+# Create/overwrite report file
+$reportPath = "report.txt"
+"" | Out-File $reportPath
+
+# Function to write both to screen and file
+function Write-Report {
+    param(
+        [string]$text
+    )
+    Write-Host $text
+    $text | Out-File $reportPath -Append
+}
+
+# --------------------------------------------
+# 1. USER INPUT
+# --------------------------------------------
+
+$name = Read-Host "Enter your name"
+$times = Read-Host "How many times to display greeting?"
+
+# Validate numeric input (BONUS)
+if (-not ($times -match "^\d+$")) {
+    Write-Host "You must enter a number. Script exiting." -ForegroundColor Red
+    exit
+}
+
+$times = [int]$times
+
+Write-Report "===== USER GREETING SECTION ====="
+
+# --------------------------------------------
+# 2. LOOP
+# --------------------------------------------
+
+for ($i = 1; $i -le $times; $i++) {
+    Write-Report "Tere, $name! ($i)"
+}
+
+# --------------------------------------------
+# 3. SYSTEM INFORMATION
+# --------------------------------------------
+
+Write-Report ""
+Write-Report "===== SYSTEM INFORMATION ====="
+
+Write-Report "Computer Name: $env:COMPUTERNAME"
+Write-Report "Logged-in User: $env:USERNAME"
+Write-Report "PowerShell Version: $($PSVersionTable.PSVersion)"
+
+# --------------------------------------------
+# 4. CMDLETS
+# --------------------------------------------
+
+Write-Report ""
+Write-Report "===== RUNNING PROCESSES ====="
+
+Get-Process | Select-Object -First 3 Name, Id |
+ForEach-Object {
+    Write-Report "$($_.Name) - ID: $($_.Id)"
+}
+
+Write-Report ""
+Write-Report "===== SERVICES ====="
+
+Get-Service | Select-Object -First 3 Name, Status |
+ForEach-Object {
+    Write-Report "$($_.Name) - Status: $($_.Status)"
+}
+
+# --------------------------------------------
+# 5. IF CONDITION
+# --------------------------------------------
+
+Write-Report ""
+Write-Report "===== VERSION CHECK ====="
+
+if ($PSVersionTable.PSVersion.Major -lt 5) {
+    Write-Report "WARNING: PowerShell version is below 5!"
+}
+else {
+    Write-Report "PowerShell version is suitable."
+}
+
+# --------------------------------------------
+# BONUS – Add Date and Time
+# --------------------------------------------
+
+Write-Report ""
+Write-Report "Report generated on: $(Get-Date)"
+
+# --------------------------------------------
+# 7. FINAL MESSAGE
+# --------------------------------------------
+
+Write-Host ""
+Write-Host "===========================" -ForegroundColor Green
+Write-Host "Script finished successfully" -ForegroundColor Green
+Write-Host "===========================" -ForegroundColor Green
